@@ -13,7 +13,7 @@ import (
 )
 
 type config struct {
-	Host  string `json:"host"`
+	Host  string `json:"host,omitempty"`
 	Nick  string `json:"nick"`
 	Pass  string `json:"pass"`
 	Sleep int    `json:"sleep"`
@@ -26,7 +26,20 @@ var channel string
 func init() {
 	bs, err := ioutil.ReadFile("config.json")
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		var file *os.File
+		file, err = os.Create("config.json")
+		cfg = config{
+			Nick: "xd",
+			Pass: "oauth:hiouefhiouerhjfgoirdhg",
+		}
+		bs, err = json.MarshalIndent(cfg, "", "  ")
+		if err != nil {
+			log.Fatal(err)
+		}
+		file.Write(bs)
+		fmt.Println("no config file found, i made one, just put in your username and oauth token")
+		os.Exit(0)
 	}
 	err = json.Unmarshal(bs, &cfg)
 	if err != nil {
