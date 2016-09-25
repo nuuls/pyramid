@@ -72,7 +72,7 @@ func readChat() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if line == "PING " {
+		if strings.HasPrefix(line, "PING") {
 			send(strings.Replace(line, "PING", "PONG", 1))
 		}
 
