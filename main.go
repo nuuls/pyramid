@@ -46,19 +46,27 @@ func init() {
 		log.Fatal(err)
 	}
 	sleep = time.Duration(cfg.Sleep) * time.Millisecond
+	if len(os.Args) < 2 {
+		fmt.Print("channel: ")
+		r := bufio.NewReader(os.Stdin)
+		line, err := r.ReadString('\n')
+		if err != nil {
+			log.Fatal(err)
+		}
+		channel = strings.ToLower(line)
+		channel = strings.Replace(channel, "\n", "", -1)
+		channel = strings.Replace(channel, "\r", "", -1)
+
+	} else {
+		channel = strings.ToLower(os.Args[1])
+	}
+	fmt.Println("channel set to", channel)
 }
 
 func main() {
-	args := os.Args
-	if len(args) < 2 {
-		fmt.Println("usage: pyramid.exe yourChannel")
-		fmt.Println("example: pyramid.exe nuuls")
-		os.Exit(1)
-	}
 	fmt.Print("usage: ")
 	fmt.Println("make a pyramid: Kappa 5")
 	fmt.Print("set new sleep: 1700\n\n\n")
-	channel = strings.ToLower(args[1])
 	connect()
 	go readInput()
 	readChat()

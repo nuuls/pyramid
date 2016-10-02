@@ -40,7 +40,7 @@ func connect() {
 	}
 
 	send("PASS " + cfg.Pass)
-	send("NICK " + cfg.Nick)
+	send("NICK " + strings.ToLower(cfg.Nick))
 	send("CAP REQ twitch.tv/tags")
 	send("CAP REQ twitch.tv/commands")
 	send("JOIN #" + channel)
